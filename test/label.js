@@ -25,6 +25,18 @@ describe('label', () => {
     }, (error) => done(error))
   })
 
+  it('Should use name', function (done) {
+    label.set(rxjs.Observable.of({
+      name: "label"
+    })).toArray().subscribe((entries) => {
+      expect(entries).to.have.property('length', 1)
+      expect(entries).to.containSubset([{
+        $label: "label"
+      }])
+      done()
+    }, (error) => done(error))
+  })
+
   it('Should use $key', function (done) {
     label.set(rxjs.Observable.of({
       key: "Label"
