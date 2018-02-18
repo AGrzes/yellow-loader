@@ -27,3 +27,4 @@ function set(source,labelFunction){
 }
 
 module.exports.set = set
+module.exports.keyFromEntity = keyFromEntity
