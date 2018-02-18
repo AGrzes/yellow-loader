@@ -2,6 +2,7 @@ const expect = require('chai').use(require('chai-subset')).expect
 const mock = require('mock-fs')
 const main = require('../src/main')
 const rxjs = require('rxjs')
+const fs = require('fs')
 describe('main', () => {
   before(() => {
     mock({
@@ -18,7 +19,9 @@ name: value6
   })
   after(() => mock.restore())
   it('Should load all entities',function(done){
-    main('/').subscribe((model) => {
+    main('/','/target.json').subscribe(null, (error) => done(error),() => {
+      const content = fs.readFileSync('/target.json')
+      const model = JSON.parse(content)
       expect(model).to.have.property('length', 6)
       expect(model).to.containSubset([{
         $metadata: {
@@ -69,6 +72,6 @@ name: value6
         "$label":"value6"
       }])
       done()
-    }, (error) => done(error))
+    })
   })
 })
