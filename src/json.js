@@ -20,4 +20,9 @@ function load(source) {
   )
 }
 
+function serialize(source){
+  return source.map(JSON.stringify)
+}
+
 module.exports.load = load
+module.exports.serialize = serialize

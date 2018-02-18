@@ -61,4 +61,15 @@ describe('json', () => {
       done()
     }, (error) => done(error))
   })
+
+  it('Should serialize', function (done) {
+    json.serialize(rxjs.Observable.of({
+      key: "value"
+    })).subscribe((content) => {
+      expect(JSON.parse(content)).to.be.deep.equals({
+        key: "value"
+      })
+      done()
+    }, (error) => done(error))
+  })
 })
