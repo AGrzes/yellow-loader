@@ -24,7 +24,17 @@ describe('key', () => {
       done()
     }, (error) => done(error))
   })
-
+  it('Should use id', function (done) {
+    key.set(rxjs.Observable.of({
+      id: "key"
+    })).toArray().subscribe((entries) => {
+      expect(entries).to.have.property('length', 1)
+      expect(entries).to.containSubset([{
+        $key: "key"
+      }])
+      done()
+    }, (error) => done(error))
+  })
   it('Should use label', function (done) {
     key.set(rxjs.Observable.of({
       label: "key"

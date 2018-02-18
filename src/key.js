@@ -9,6 +9,8 @@ function keyFromEntity(entity,labelFunction){
     return entity.$key
   } else if (entity.key){
     return entity.key
+  } else if (entity.id){
+    return entity.id
   } else if (labelFunction) {
     const label = labelFunction(entity)
     if (label){
