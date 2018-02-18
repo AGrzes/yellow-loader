@@ -14,22 +14,16 @@ describe('scan', () => {
   it('Should scan selected directory', function (done) {
     scan('/base').toArray().subscribe((entries) => {
       expect(entries).to.containSubset([{
-        $metadata: {
-          path: '/base/file1',
-          fileName: 'file1'
-        }
+        path: '/base/file1',
+        fileName: 'file1'
       }])
       expect(entries).to.containSubset([{
-        $metadata: {
-          path: '/base/file2',
-          fileName: 'file2'
-        }
+        path: '/base/file2',
+        fileName: 'file2'
       }])
       expect(entries).not.to.containSubset([{
-        $metadata: {
-          path: '/another',
-          fileName: 'another'
-        }
+        path: '/another',
+        fileName: 'another'
       }])
       done()
     }, (error) => done(error))
