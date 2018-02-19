@@ -6,6 +6,7 @@ const readFile = rx.Observable.bindNodeCallback(fs.readFile)
 function load(source) {
   return source.filter((entry) => /.*\.json/.test(entry.fileName)).mergeMap((entry) =>
     readFile(entry.path).mergeMap((contents) => {
+      try {
       const json = JSON.parse(contents)
       if (_.isArray(json)) {
         return rx.Observable.of(..._.map(json, (document) => Object.assign(document, {
@@ -16,6 +17,11 @@ function load(source) {
           $metadata: entry
         }))
       }
+    } catch (e){
+      console.error(entry.path)
+      console.error(e)
+      return rx.Observable.empty()
+    }
     })
   )
 }
