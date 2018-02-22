@@ -18,4 +18,24 @@ describe('label', () => {
       done()
     }, (error) => done(error))
   })
+  it('Should combine values', function (done) {
+    merge(rxjs.Observable.of({
+      $key: "value1",
+      attribute:"value1"
+    },{
+      $key: "value1",
+      attribute:"value2"
+    })).last().subscribe((entries) => {
+      expect(entries).to.have.property('length', 1)
+      expect(entries).to.containSubset([{
+        $key: "value1",
+        attribute:["value1"]
+      }])
+      expect(entries).to.containSubset([{
+        $key: "value1",
+        attribute:["value2"]
+      }])
+      done()
+    }, (error) => done(error))
+  })
 })
