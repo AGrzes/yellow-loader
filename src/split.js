@@ -17,7 +17,7 @@ function split(source,keyFunction,sink){
           }
         }
         if (entity.$metadata){
-          value.$metadata = _.clone(entity.$metadata)
+          value.$metadata =_.assign({},_.clone(entity.$metadata),value.$metadata) 
         }
         sink(value)
         return keyFunction(value)
