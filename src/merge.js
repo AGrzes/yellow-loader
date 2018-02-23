@@ -9,7 +9,17 @@ function merge(source){
           return targetValue || sourceValue
         } else {
           if (targetValue && sourceValue){
-            return [targetValue,sourceValue]
+            if (_.isArray(targetValue)){
+              if (_.isArray(sourceValue)){
+                return [...targetValue,...sourceValue]
+              } else {
+                return [...targetValue,sourceValue]
+              }
+            } else if (_.isArray(sourceValue)){
+              return [targetValue,...sourceValue]
+            } else {
+              return [targetValue,sourceValue]
+            }
           } else {
             return targetValue || sourceValue
           }
