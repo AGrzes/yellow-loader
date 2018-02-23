@@ -17,19 +17,27 @@ function mergeValues(targetValue,sourceValue){
     return targetValue || sourceValue
   }
 }
+function isGenerated(entry){
+  return entry.$metadata && entry.$metadata.generated
+}
 
 function merge(source){
   const model = {}
   return source.map((entry)=>{
-    if (model[entry.$key]){
-      _.mergeWith(model[entry.$key],entry,(targetValue,sourceValue,key)=>{
-        if (_.startsWith(key,'$')){
-          return targetValue || sourceValue
-        } else {
-          return mergeValues(targetValue,sourceValue)
-        }
-      })
-    } else {
+    const existing = model[entry.$key]
+    if (existing){
+      if (isGenerated(existing) == isGenerated(entry)) {
+        _.mergeWith(existing, entry, (targetValue, sourceValue, key) => {
+          if (_.startsWith(key, '$')) {
+            return targetValue || sourceValue
+          } else {
+            return mergeValues(targetValue, sourceValue)
+          }
+        })
+      } else if (isGenerated(existing)) {
+        model[entry.$key] = entry
+      }
+      } else {
       model[entry.$key] = entry
     }
     return _.values(model)

@@ -58,6 +58,38 @@ describe('label', () => {
       done()
     }, (error) => done(error))
   })
+  it('Should skip generated if one is real entity', function (done) {
+    merge(rxjs.Observable.of({
+      $key: "value1",
+      attribute:"value1"
+    },{
+      $metadata:{
+        generated:true
+      },
+      $key: "value1",
+      attribute:"value2"
+    },{
+      $metadata:{
+        generated:true
+      },
+      $key: "value2",
+      attribute:"value1"
+    },{
+      $key: "value2",
+      attribute:"value2"
+    })).last().subscribe((entries) => {
+      expect(entries).to.have.property('length', 2)
+      expect(entries).to.containSubset([{
+        $key: "value1",
+        attribute:"value1"
+      }])
+      expect(entries).to.containSubset([{
+        $key: "value2",
+        attribute:"value2"
+      }])
+      done()
+    }, (error) => done(error))
+  })
   it('Should combine multiple values', function (done) {
     merge(rxjs.Observable.of({
       $key: "value1",
