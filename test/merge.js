@@ -38,6 +38,26 @@ describe('label', () => {
       done()
     }, (error) => done(error))
   })
+  it('Should use present values', function (done) {
+    merge(rxjs.Observable.of({
+      $key: "value1",
+      attribute1:"value1"
+    },{
+      $key: "value1",
+      attribute2:"value2"
+    })).last().subscribe((entries) => {
+      expect(entries).to.have.property('length', 1)
+      expect(entries).to.containSubset([{
+        $key: "value1",
+        attribute1:"value1"
+      }])
+      expect(entries).to.containSubset([{
+        $key: "value1",
+        attribute2:"value2"
+      }])
+      done()
+    }, (error) => done(error))
+  })
   it('Should combine multiple values', function (done) {
     merge(rxjs.Observable.of({
       $key: "value1",
