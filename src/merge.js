@@ -1,5 +1,23 @@
 const _  = require('lodash')
 
+function mergeValues(targetValue,sourceValue){
+  if (targetValue && sourceValue){
+    if (_.isArray(targetValue)){
+      if (_.isArray(sourceValue)){
+        return [...targetValue,...sourceValue]
+      } else {
+        return [...targetValue,sourceValue]
+      }
+    } else if (_.isArray(sourceValue)){
+      return [targetValue,...sourceValue]
+    } else {
+      return [targetValue,sourceValue]
+    }
+  } else {
+    return targetValue || sourceValue
+  }
+}
+
 function merge(source){
   const model = {}
   return source.map((entry)=>{
@@ -8,21 +26,7 @@ function merge(source){
         if (_.startsWith(key,'$')){
           return targetValue || sourceValue
         } else {
-          if (targetValue && sourceValue){
-            if (_.isArray(targetValue)){
-              if (_.isArray(sourceValue)){
-                return [...targetValue,...sourceValue]
-              } else {
-                return [...targetValue,sourceValue]
-              }
-            } else if (_.isArray(sourceValue)){
-              return [targetValue,...sourceValue]
-            } else {
-              return [targetValue,sourceValue]
-            }
-          } else {
-            return targetValue || sourceValue
-          }
+          return mergeValues(targetValue,sourceValue)
         }
       })
     } else {
