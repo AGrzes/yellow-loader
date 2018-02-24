@@ -1,12 +1,12 @@
 const _  = require('lodash')
-
+const rx = require('rxjs')
 function isRelation(attribute){
   return _.startsWith(attribute,'@')
 }
 
-function split(source,keyFunction,sink){
-  return source.map((entity)=>{
-    return _.mapValues(entity,(value,key)=>{
+function splitEntity(entity,keyFunction){
+    const result=[]
+    result.push(_.mapValues(entity,(value,key)=>{
       if (isRelation(key)){
         if (_.isString(value)){
           value = {
@@ -19,12 +19,18 @@ function split(source,keyFunction,sink){
         if (entity.$metadata){
           value.$metadata =_.assign({},_.clone(entity.$metadata),value.$metadata) 
         }
-        sink(value)
+        result.push(splitEntity(value,keyFunction))
         return keyFunction(value)
       } else {
         return value
       }
-    })
+    }))
+    return _.flatten(result)
+}
+
+function split(source,keyFunction){
+  return source.mergeMap((entity)=>{
+    return rx.Observable.of(...splitEntity(entity,keyFunction))
   })
 }
 
