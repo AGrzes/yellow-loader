@@ -17,6 +17,23 @@ describe('split', () => {
       done()
     }, (error) => done(error))
   })
+  it('Should emit related array', function (done) {
+    split(rx.Observable.of({
+      "@related": [{"key":"value1"},{"key":"value2"}]
+    }),(entity)=> entity.key).toArray().subscribe((entries) => {
+      expect(entries).to.have.property('length', 3)
+      expect(entries).to.containSubset([{
+        "@related":["value1","value2"]
+      }])
+      expect(entries).to.containSubset([{
+        "key":"value1"
+      }])
+      expect(entries).to.containSubset([{
+        "key":"value2"
+      }])
+      done()
+    }, (error) => done(error))
+  })
   it('Should copy $metadata', function (done) {
     split(rx.Observable.of({
       $metadata:{

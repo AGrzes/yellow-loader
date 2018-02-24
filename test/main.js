@@ -92,7 +92,6 @@ name: value6
       main('/','/target.json').subscribe(null, (error) => done(error),() => {
         const content = fs.readFileSync('/target.json')
         const model = JSON.parse(content)
-        console.log(model)
         expect(model).to.have.property('length', 2)
         expect(model).to.containSubset([{
           $metadata: {
@@ -112,5 +111,43 @@ name: value6
         done()
       })
     })
-  })  
+  })
+  describe('Keys from label', () => {
+    before(() => {
+      mock({
+        '/file1.json': JSON.stringify([{
+          $key: "key1",
+          "@related": {
+            label: "Key2"
+          }
+        }]),
+      })
+    })
+    after(() => mock.restore())
+    it('Should split relations',function(done){
+      main('/','/target.json').subscribe(null, (error) => done(error),() => {
+        const content = fs.readFileSync('/target.json')
+        const model = JSON.parse(content)
+        expect(model).to.have.property('length', 2)
+        expect(model).to.containSubset([{
+          $metadata: {
+            path: '/file1.json',
+            fileName: 'file1.json'
+          },
+          "$key": "key1",
+          "@related": "key-2"
+        }])
+        expect(model).to.containSubset([{
+          $metadata: {
+            path: '/file1.json',
+            fileName: 'file1.json'
+          },
+          "$key": "key-2",
+          label: "Key2",
+          $label: "Key2"
+        }])
+        done()
+      })
+    })
+  }) 
 })

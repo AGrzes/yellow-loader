@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 const main = require('./main')
 const rx = require('rxjs')
 const parameters = require('yargs')
