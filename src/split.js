@@ -8,6 +8,23 @@ function splitEntity(entity,keyFunction){
     const result=[]
     result.push(_.mapValues(entity,(value,key)=>{
       if (isRelation(key)){
+        if (_.isArray(value)){
+          return _.map(value,(item)=>{
+            if (_.isString(item)){
+              item = {
+                $metadata:{
+                  generated:true
+                },
+                $label:item
+              }
+            }
+            if (entity.$metadata){
+              item.$metadata =_.assign({},_.clone(entity.$metadata),item.$metadata) 
+            }
+            result.push(splitEntity(item,keyFunction))
+            return keyFunction(item)
+          })
+        }
         if (_.isString(value)){
           value = {
             $metadata:{
