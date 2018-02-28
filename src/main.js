@@ -16,7 +16,7 @@ function load(basePath,target){
   const withKey = key.set(relationsSplit,label.labelFromEntity)
   const withLabel = label.set(withKey,key.keyFromEntity)
   const merged = merge(withLabel)
-  const serialized = json.serialize(merged.last())
+  const serialized = json.serialize(merged.last().map((model)=>({items:model})))
 
   return serialized.mergeMap((content)=>writeFile(target,content,'UTF-8'))
 }

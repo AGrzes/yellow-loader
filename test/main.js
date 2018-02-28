@@ -22,7 +22,9 @@ name: value6
     it('Should load all entities',function(done){
       main('/','/target.json').subscribe(null, (error) => done(error),() => {
         const content = fs.readFileSync('/target.json')
-        const model = JSON.parse(content)
+        const modelWrapper = JSON.parse(content)
+        expect(modelWrapper).to.have.property('items')
+        const model = modelWrapper.items
         expect(model).to.have.property('length', 6)
         expect(model).to.containSubset([{
           $metadata: {
@@ -91,7 +93,9 @@ name: value6
     it('Should split relations',function(done){
       main('/','/target.json').subscribe(null, (error) => done(error),() => {
         const content = fs.readFileSync('/target.json')
-        const model = JSON.parse(content)
+        const modelWrapper = JSON.parse(content)
+        expect(modelWrapper).to.have.property('items')
+        const model = modelWrapper.items
         expect(model).to.have.property('length', 2)
         expect(model).to.containSubset([{
           $metadata: {
@@ -127,7 +131,9 @@ name: value6
     it('Should split relations',function(done){
       main('/','/target.json').subscribe(null, (error) => done(error),() => {
         const content = fs.readFileSync('/target.json')
-        const model = JSON.parse(content)
+        const modelWrapper = JSON.parse(content)
+        expect(modelWrapper).to.have.property('items')
+        const model = modelWrapper.items
         expect(model).to.have.property('length', 2)
         expect(model).to.containSubset([{
           $metadata: {
