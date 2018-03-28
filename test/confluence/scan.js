@@ -10,6 +10,18 @@ describe('scan', () => {
           "type": "page",
           "status": "current",
           "title": "!!title!!",
+          "metadata": {
+            "labels": {
+              "results": [
+                {
+                  "name": "!!!label1!!!"
+                },
+                {
+                  "name": "!!!label2!!!"
+                }
+              ]
+            }
+          },
           "container": {
             "id": 589827,
             "key": "!!spaceKey!!",
@@ -36,6 +48,7 @@ describe('scan', () => {
         "status": "current",
         "title": "!!title!!",
         "content": "!!content!!",
+        "labels": ["!!!label1!!!","!!!label2!!!"],
         "space": {
           "id": 589827,
           "key": "!!spaceKey!!",
