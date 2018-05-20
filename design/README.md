@@ -58,10 +58,10 @@ File plugin generates data with following fields
   * type - content type
 
 ### Configuration
-File plugin uses paths relative to project root. 
+File plugin uses paths relative to project root. d
 
-File plugin on default will scan whole project directory tree.
-To change this one can define one or more file patterns.
+File plugin on default will scan whole project did
+To change this one can define one or more file pad
 
 File plugin will use all loaded parser plugins - unless configured with specific plugins.
 
@@ -96,3 +96,9 @@ Two most common scenarios are
 * Transforming data source metadata into entity attributes
 * Removing data source specific attributes
 * Standardizing filed formats - for example for dates and numbers
+
+# Storage
+Storage should be able to persist stream of entity events and replay it later.
+## CouchDB
+CouchDB is a document database that is wel suited for entity stream storage. 
+CouchDB storage plugin uses source and entity key to calculate document key - so updates from the same source are stored as document updates.
