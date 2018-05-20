@@ -66,4 +66,9 @@ To change this one can define one or more file patterns.
 
 File plugin will use all loaded parser plugins - unless configured with specific plugins.
 
-
+## JIRA Data Source
+TBD
+## Confluence Data Source
+TBD
+## HTTP Data Source
+TBD
