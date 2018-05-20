@@ -28,6 +28,8 @@ Event schema should be as follow:
 * type - type of event
 * source - descriptor of source
   * plugin - identifier of plugin generating events
+  * project - model project identifier
+  * rule - load rule identifier
   * location - plugin specific object describing location of source data
   * alt - plugin specific object describing alternative location of source dat
 * data - plugin specific object containing data
@@ -39,3 +41,29 @@ Event types should be one of the following
 * data - piece of data
 * delete - if plugin is able to detect deletion in source then should propagate this information - should not sent `data` field
 * move - if plugin is able to detect move in source then should propagate this information - it should send original location in `source.alt` field
+
+## File Data Source
+File plugins scans file system for specified files and expose them to rest of pipeline. 
+It is also responsible for parsing known file formats by calling configured parser plugins.
+
+### Location
+Location is composed of
+* path - location relative to project root
+
+### Data
+File plugin generates data with following fields
+* content - content of file - raw or parsed
+* metadata - file metadata
+  * size - size of file
+  * updated - last modified time
+  * type - content type
+
+### Configuration
+File plugin uses paths relative to project root. 
+
+File plugin on default will scan whole project directory tree.
+To change this one can define one or more file patterns.
+
+File plugin will use all loaded parser plugins - unless configured with specific plugins.
+
+
