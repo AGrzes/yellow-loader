@@ -1,11 +1,12 @@
 # Example 
 ```javascript
 const yellow = require('yellow').use(parser.json).use(parser.yaml).use(source.file)
-const source = yellow.loader().file()
-const extract = yellow.extract().split(splitter.array)
+yellow.key(attribute('$type').separator(':').attribute('name').snakeCase())
+const changelog = yellow.loader().file('changelog').attribute('$type',value('changelog')).attribute('name',path(0))
+const extract = yellow.extract()
 const persist = require('ouch-rx').sink('<couchdb url>')
 persist.subscribe(extract)
-extract.subscribe(source)
+extract.subscribe(changelog)
 source.scan()
 
 ```
