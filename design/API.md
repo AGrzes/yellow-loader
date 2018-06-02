@@ -64,7 +64,29 @@ source.scan(persist)
 ## Yellow Object
 Yellow module is an entry point to yellow API
 
+## Loader Object
+Object holding load configuration and executing loads.
+
 ### `use(plugin)`
-Use method registers plugin with yellow object. 
-It will register associated extensions to Yellow object API.
+Use method registers plugin with loader object. 
+It will register associated extensions to loader object API.
+
+### `source.file(pattern)`
+Configure loading rule to use file plugin scanning for files.
+Returns load rule object.
+### `source.dir(pattern)`
+Configure loading rule to use file plugin scanning for directories.
+Returns load rule object.
+
+### `scan(target)`
+Executes load in scan mode and passes results to the target.
+
+## Load Rule Object
+Represents load rule as part of loader.
+### `extract((source,content,extract)=>{})
+Defines extraction function. 
+It should call `extract` for each extracted entity.
+`extract` parameters
+* Entity key
+* Entity content
 
