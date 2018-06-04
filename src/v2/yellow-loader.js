@@ -16,19 +16,27 @@ class Source {
 
 class Loader {
   constructor(){
-    this.source = new Source()
+    this.source = new Source(this)
   }
   use(plugin){
 
   }
   scan(target){
-    
+
+  }
+}
+
+class Builder {
+  build(){
+    return new Loader()
   }
 }
 
 module.exports.loader =  function loader(){
   return new Loader()
 }
+
+module.exports.builder = () => new Builder()
 
 module.exports.parser = {
   
@@ -37,3 +45,5 @@ module.exports.parser = {
 module.exports.source = {
   
 }
+
+module.exports.Loader = Loader
