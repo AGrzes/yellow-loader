@@ -39,5 +39,23 @@ describe('file-source',function(){
         done()
       }, (error) => done(error))
     })
+
+    it('Should use base', function (done) {
+      new fileSource.FileSource('**',{base:'/base'}).scan().toArray().subscribe((entries) => {
+        expect(entries).to.containSubset([{
+          path: 'file1',
+          name: 'file1'
+        }])
+        expect(entries).to.containSubset([{
+          path: 'file2',
+          name: 'file2'
+        }])
+        expect(entries).not.to.containSubset([{
+          path: '/another',
+          name: 'another'
+        }])
+        done()
+      }, (error) => done(error))
+    })
   })
 })
