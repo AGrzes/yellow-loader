@@ -7,7 +7,7 @@ class FileSource {
     this.base = base
   }
   scan(){
-    return streamToRx(vfs.src(this.globs,{base:this.base})).map((vfile)=>({
+    return streamToRx(vfs.src(this.globs,{cwd:this.base,nodir:true})).map((vfile)=>({
       path:vfile.path,
       name:vfile.basename
     }))

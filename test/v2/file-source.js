@@ -29,5 +29,15 @@ describe('file-source',function(){
         done()
       }, (error) => done(error))
     })
+
+    it('Should list only files', function (done) {
+      new fileSource.FileSource('/base/**').scan().toArray().subscribe((entries) => {
+        expect(entries).not.to.containSubset([{
+          path: '/base',
+          name: 'base'
+        }])
+        done()
+      }, (error) => done(error))
+    })
   })
 })
