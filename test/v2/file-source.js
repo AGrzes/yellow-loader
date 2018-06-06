@@ -5,8 +5,8 @@ describe('file-source',function(){
   describe('FileSource',function(){
     before(() => {
       mock({
-        '/base/file1': '',
-        '/base/file2': '',
+        '/base/file1.json': '{"json":"value"}',
+        '/base/file2.yaml': 'yaml: value',
         '/another': ''
       })
     })
@@ -15,12 +15,12 @@ describe('file-source',function(){
     it('Should scan selected directory', function (done) {
       new fileSource.FileSource('/base/**').scan().toArray().subscribe((entries) => {
         expect(entries).to.containSubset([{
-          path: '/base/file1',
-          name: 'file1'
+          path: '/base/file1.json',
+          name: 'file1.json'
         }])
         expect(entries).to.containSubset([{
-          path: '/base/file2',
-          name: 'file2'
+          path: '/base/file2.yaml',
+          name: 'file2.yaml'
         }])
         expect(entries).not.to.containSubset([{
           path: '/another',
@@ -43,16 +43,29 @@ describe('file-source',function(){
     it('Should use base', function (done) {
       new fileSource.FileSource('**',{base:'/base'}).scan().toArray().subscribe((entries) => {
         expect(entries).to.containSubset([{
-          path: 'file1',
-          name: 'file1'
+          path: 'file1.json',
+          name: 'file1.json'
         }])
         expect(entries).to.containSubset([{
-          path: 'file2',
-          name: 'file2'
+          path: 'file2.yaml',
+          name: 'file2.yaml'
         }])
         expect(entries).not.to.containSubset([{
           path: '/another',
           name: 'another'
+        }])
+        done()
+      }, (error) => done(error))
+    })
+
+    it('Should parse json file', function (done) {
+      new fileSource.FileSource('/base/**').scan().toArray().subscribe((entries) => {
+        expect(entries).to.containSubset([{
+          path: '/base/file1.json',
+          name: 'file1.json',
+          content: {
+            json: "value"
+          }
         }])
         done()
       }, (error) => done(error))
