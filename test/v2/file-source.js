@@ -70,5 +70,18 @@ describe('file-source',function(){
         done()
       }, (error) => done(error))
     })
+
+    it('Should parse yaml file', function (done) {
+      new fileSource.FileSource('/base/**').scan().toArray().subscribe((entries) => {
+        expect(entries).to.containSubset([{
+          path: '/base/file2.yaml',
+          name: 'file2.yaml',
+          content: {
+            yaml: "value"
+          }
+        }])
+        done()
+      }, (error) => done(error))
+    })
   })
 })

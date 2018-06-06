@@ -3,9 +3,10 @@ const rx = require('rxjs')
 const streamToRx = require('rxjs-stream').streamToRx
 const path = require('path')
 const mime = require('mime')
-
+const YAML = require('js-yaml')
 const parsers = {
-  'application/json': (text)=>JSON.parse(text)
+  'application/json': (text)=>JSON.parse(text),
+  'text/yaml': (text)=>YAML.load(text)
 }
 
 class FileSource {
