@@ -18,6 +18,8 @@ class FileSource {
         type: 'data',
         source:{
           plugin: 'FileSource',
+          project: this.project,
+          rule: this.rule,
           path:this.base ? path.relative(this.base, vfile.path): vfile.path,
           name:vfile.basename
         },
@@ -25,10 +27,12 @@ class FileSource {
       })
     }
 
-    const {base}= options
+    const {base,project,rule}= options
     this.globs = globs
     this.base = base
     this.extract = extract
+    this.project = project
+    this.rule = rule
   }
   scan(){
     return streamToRx(vfs.src(this.globs,{cwd:this.base,nodir:true})).map((vfile)=>({

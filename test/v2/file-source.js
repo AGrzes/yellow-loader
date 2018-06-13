@@ -13,11 +13,13 @@ describe('file-source', function () {
     after(() => mock.restore())
 
     it('Should scan selected directory', function (done) {
-      new fileSource.FileSource('/base/**').scan().toArray().subscribe((entries) => {
+      new fileSource.FileSource('/base/**',{project:'project',rule:'rule'}).scan().toArray().subscribe((entries) => {
         expect(entries).to.containSubset([{
           type:'data',
           source: {
             plugin: 'FileSource',
+            project: 'project',
+            rule:'rule',
             path: '/base/file1.json',
             name: 'file1.json'
           }
@@ -26,6 +28,8 @@ describe('file-source', function () {
           type:'data',
           source: {
             plugin: 'FileSource',
+            project: 'project',
+            rule:'rule',
             path: '/base/file2.yaml',
             name: 'file2.yaml'
           }
@@ -34,6 +38,8 @@ describe('file-source', function () {
           type:'data',
           source: {
             plugin: 'FileSource',
+            project: 'project',
+            rule:'rule',
             path: '/another',
             name: 'another'
           }
@@ -43,11 +49,13 @@ describe('file-source', function () {
     })
 
     it('Should list only files', function (done) {
-      new fileSource.FileSource('/base/**').scan().toArray().subscribe((entries) => {
+      new fileSource.FileSource('/base/**',{project:'project',rule:'rule'}).scan().toArray().subscribe((entries) => {
         expect(entries).not.to.containSubset([{
           type:'data',
           source: {
             plugin: 'FileSource',
+            project: 'project',
+            rule:'rule',
             path: '/base',
             name: 'base'
           }
@@ -58,12 +66,16 @@ describe('file-source', function () {
 
     it('Should use base', function (done) {
       new fileSource.FileSource('**', {
-        base: '/base'
+        base: '/base',
+        project: 'project',
+        rule:'rule'
       }).scan().toArray().subscribe((entries) => {
         expect(entries).to.containSubset([{
           type:'data',
           source: {
             plugin: 'FileSource',
+            project: 'project',
+            rule:'rule',
             path: 'file1.json',
             name: 'file1.json'
           }
@@ -72,6 +84,8 @@ describe('file-source', function () {
           type:'data',
           source: {
             plugin: 'FileSource',
+            project: 'project',
+            rule:'rule',
             path: 'file2.yaml',
             name: 'file2.yaml'
           }
@@ -80,6 +94,8 @@ describe('file-source', function () {
           type:'data',
           source: {
             plugin: 'FileSource',
+            project: 'project',
+            rule:'rule',
             path: '/another',
             name: 'another'
           }
@@ -89,11 +105,13 @@ describe('file-source', function () {
     })
 
     it('Should parse json file', function (done) {
-      new fileSource.FileSource('/base/**').scan().toArray().subscribe((entries) => {
+      new fileSource.FileSource('/base/**',{project:'project',rule:'rule'}).scan().toArray().subscribe((entries) => {
         expect(entries).to.containSubset([{
           type:'data',
           source: {
             plugin: 'FileSource',
+            project: 'project',
+            rule:'rule',
             path: '/base/file1.json',
             name: 'file1.json',
           },
@@ -106,11 +124,13 @@ describe('file-source', function () {
     })
 
     it('Should parse yaml file', function (done) {
-      new fileSource.FileSource('/base/**').scan().toArray().subscribe((entries) => {
+      new fileSource.FileSource('/base/**',{project:'project',rule:'rule'}).scan().toArray().subscribe((entries) => {
         expect(entries).to.containSubset([{
           type:'data',
           source: {
             plugin: 'FileSource',
+            project: 'project',
+            rule:'rule',
             path: '/base/file2.yaml',
             name: 'file2.yaml',
           },
