@@ -83,5 +83,23 @@ describe('file-source',function(){
         done()
       }, (error) => done(error))
     })
+
+    it('Should use extract function', function (done) {
+      new fileSource.FileSource('/base/**',(item)=>({
+        basename: item.basename,
+        dirname: item.dirname,
+        details: item.content
+      })).scan().toArray().subscribe((entries) => {
+        expect(entries).to.containSubset([{
+          basename: 'file2.yaml',
+          dirname: '/base',
+          details: {
+            yaml: "value"
+          }
+        }])
+        done()
+      }, (error) => done(error))
+    })
+    
   })
 })
