@@ -15,18 +15,21 @@ describe('file-source', function () {
     it('Should scan selected directory', function (done) {
       new fileSource.FileSource('/base/**').scan().toArray().subscribe((entries) => {
         expect(entries).to.containSubset([{
+          type:'data',
           source: {
             path: '/base/file1.json',
             name: 'file1.json'
           }
         }])
         expect(entries).to.containSubset([{
+          type:'data',
           source: {
             path: '/base/file2.yaml',
             name: 'file2.yaml'
           }
         }])
         expect(entries).not.to.containSubset([{
+          type:'data',
           source: {
             path: '/another',
             name: 'another'
@@ -39,6 +42,7 @@ describe('file-source', function () {
     it('Should list only files', function (done) {
       new fileSource.FileSource('/base/**').scan().toArray().subscribe((entries) => {
         expect(entries).not.to.containSubset([{
+          type:'data',
           source: {
             path: '/base',
             name: 'base'
@@ -53,18 +57,21 @@ describe('file-source', function () {
         base: '/base'
       }).scan().toArray().subscribe((entries) => {
         expect(entries).to.containSubset([{
+          type:'data',
           source: {
             path: 'file1.json',
             name: 'file1.json'
           }
         }])
         expect(entries).to.containSubset([{
+          type:'data',
           source: {
             path: 'file2.yaml',
             name: 'file2.yaml'
           }
         }])
         expect(entries).not.to.containSubset([{
+          type:'data',
           source: {
             path: '/another',
             name: 'another'
@@ -77,6 +84,7 @@ describe('file-source', function () {
     it('Should parse json file', function (done) {
       new fileSource.FileSource('/base/**').scan().toArray().subscribe((entries) => {
         expect(entries).to.containSubset([{
+          type:'data',
           source: {
             path: '/base/file1.json',
             name: 'file1.json',
@@ -92,6 +100,7 @@ describe('file-source', function () {
     it('Should parse yaml file', function (done) {
       new fileSource.FileSource('/base/**').scan().toArray().subscribe((entries) => {
         expect(entries).to.containSubset([{
+          type:'data',
           source: {
             path: '/base/file2.yaml',
             name: 'file2.yaml',

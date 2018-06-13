@@ -15,6 +15,7 @@ class FileSource {
     if (!_.isFunction(extract)){
       options = extract
       extract = ({content,vfile})=>({
+        type: 'data',
         source:{
           path:this.base ? path.relative(this.base, vfile.path): vfile.path,
           name:vfile.basename
