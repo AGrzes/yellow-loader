@@ -20,8 +20,7 @@ describe('file-source', function () {
             plugin: 'FileSource',
             project: 'project',
             rule:'rule',
-            path: '/base/file1.json',
-            name: 'file1.json'
+            location: '/base/file1.json',
           }
         }])
         expect(entries).to.containSubset([{
@@ -30,8 +29,7 @@ describe('file-source', function () {
             plugin: 'FileSource',
             project: 'project',
             rule:'rule',
-            path: '/base/file2.yaml',
-            name: 'file2.yaml'
+            location: '/base/file2.yaml'
           }
         }])
         expect(entries).not.to.containSubset([{
@@ -40,8 +38,7 @@ describe('file-source', function () {
             plugin: 'FileSource',
             project: 'project',
             rule:'rule',
-            path: '/another',
-            name: 'another'
+            location: '/another'
           }
         }])
         done()
@@ -56,8 +53,7 @@ describe('file-source', function () {
             plugin: 'FileSource',
             project: 'project',
             rule:'rule',
-            path: '/base',
-            name: 'base'
+            location: '/base'
           }
         }])
         done()
@@ -76,8 +72,7 @@ describe('file-source', function () {
             plugin: 'FileSource',
             project: 'project',
             rule:'rule',
-            path: 'file1.json',
-            name: 'file1.json'
+            location: 'file1.json'
           }
         }])
         expect(entries).to.containSubset([{
@@ -86,8 +81,7 @@ describe('file-source', function () {
             plugin: 'FileSource',
             project: 'project',
             rule:'rule',
-            path: 'file2.yaml',
-            name: 'file2.yaml'
+            location: 'file2.yaml'
           }
         }])
         expect(entries).not.to.containSubset([{
@@ -96,8 +90,7 @@ describe('file-source', function () {
             plugin: 'FileSource',
             project: 'project',
             rule:'rule',
-            path: '/another',
-            name: 'another'
+            location: '/another'
           }
         }])
         done()
@@ -112,8 +105,7 @@ describe('file-source', function () {
             plugin: 'FileSource',
             project: 'project',
             rule:'rule',
-            path: '/base/file1.json',
-            name: 'file1.json',
+            location: '/base/file1.json'
           },
           content: {
             json: "value"
@@ -131,8 +123,7 @@ describe('file-source', function () {
             plugin: 'FileSource',
             project: 'project',
             rule:'rule',
-            path: '/base/file2.yaml',
-            name: 'file2.yaml',
+            location: '/base/file2.yaml'
           },
           content: {
             yaml: "value"

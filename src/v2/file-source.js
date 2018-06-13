@@ -20,7 +20,7 @@ class FileSource {
           plugin: 'FileSource',
           project: this.project,
           rule: this.rule,
-          path:this.base ? path.relative(this.base, vfile.path): vfile.path,
+          location:this.base ? path.relative(this.base, vfile.path): vfile.path,
           name:vfile.basename
         },
         content
