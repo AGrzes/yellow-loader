@@ -14,10 +14,12 @@ class FileSource {
   constructor(globs,extract = {},options = {}){
     if (!_.isFunction(extract)){
       options = extract
-      extract = (vfile)=>({
-        path:this.base ? path.relative(this.base, vfile.path): vfile.path,
-        name:vfile.basename,
-        content: vfile.contents
+      extract = ({content,vfile})=>({
+        source:{
+          path:this.base ? path.relative(this.base, vfile.path): vfile.path,
+          name:vfile.basename
+        },
+        content
       })
     }
 
@@ -27,10 +29,10 @@ class FileSource {
     this.extract = extract
   }
   scan(){
-    return streamToRx(vfs.src(this.globs,{cwd:this.base,nodir:true})).map((vfile)=>{
-      vfile.content = parsers[mime.getType(vfile.basename)]?parsers[mime.getType(vfile.basename)](vfile.contents):vfile.contents
-      return vfile
-    }).map(this.extract)
+    return streamToRx(vfs.src(this.globs,{cwd:this.base,nodir:true})).map((vfile)=>({
+      content:parsers[mime.getType(vfile.basename)]?parsers[mime.getType(vfile.basename)](vfile.contents):vfile.contents,
+      vfile
+    })).map(this.extract)
   }
 }
 

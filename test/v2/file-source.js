@@ -1,8 +1,8 @@
 const fileSource = require('../../src/v2/file-source')
 const expect = require('chai').expect
 const mock = require('mock-fs')
-describe('file-source',function(){
-  describe('FileSource',function(){
+describe('file-source', function () {
+  describe('FileSource', function () {
     before(() => {
       mock({
         '/base/file1.json': '{"json":"value"}',
@@ -11,20 +11,26 @@ describe('file-source',function(){
       })
     })
     after(() => mock.restore())
-  
+
     it('Should scan selected directory', function (done) {
       new fileSource.FileSource('/base/**').scan().toArray().subscribe((entries) => {
         expect(entries).to.containSubset([{
-          path: '/base/file1.json',
-          name: 'file1.json'
+          source: {
+            path: '/base/file1.json',
+            name: 'file1.json'
+          }
         }])
         expect(entries).to.containSubset([{
-          path: '/base/file2.yaml',
-          name: 'file2.yaml'
+          source: {
+            path: '/base/file2.yaml',
+            name: 'file2.yaml'
+          }
         }])
         expect(entries).not.to.containSubset([{
-          path: '/another',
-          name: 'another'
+          source: {
+            path: '/another',
+            name: 'another'
+          }
         }])
         done()
       }, (error) => done(error))
@@ -33,26 +39,36 @@ describe('file-source',function(){
     it('Should list only files', function (done) {
       new fileSource.FileSource('/base/**').scan().toArray().subscribe((entries) => {
         expect(entries).not.to.containSubset([{
-          path: '/base',
-          name: 'base'
+          source: {
+            path: '/base',
+            name: 'base'
+          }
         }])
         done()
       }, (error) => done(error))
     })
 
     it('Should use base', function (done) {
-      new fileSource.FileSource('**',{base:'/base'}).scan().toArray().subscribe((entries) => {
+      new fileSource.FileSource('**', {
+        base: '/base'
+      }).scan().toArray().subscribe((entries) => {
         expect(entries).to.containSubset([{
-          path: 'file1.json',
-          name: 'file1.json'
+          source: {
+            path: 'file1.json',
+            name: 'file1.json'
+          }
         }])
         expect(entries).to.containSubset([{
-          path: 'file2.yaml',
-          name: 'file2.yaml'
+          source: {
+            path: 'file2.yaml',
+            name: 'file2.yaml'
+          }
         }])
         expect(entries).not.to.containSubset([{
-          path: '/another',
-          name: 'another'
+          source: {
+            path: '/another',
+            name: 'another'
+          }
         }])
         done()
       }, (error) => done(error))
@@ -61,8 +77,10 @@ describe('file-source',function(){
     it('Should parse json file', function (done) {
       new fileSource.FileSource('/base/**').scan().toArray().subscribe((entries) => {
         expect(entries).to.containSubset([{
-          path: '/base/file1.json',
-          name: 'file1.json',
+          source: {
+            path: '/base/file1.json',
+            name: 'file1.json',
+          },
           content: {
             json: "value"
           }
@@ -74,8 +92,10 @@ describe('file-source',function(){
     it('Should parse yaml file', function (done) {
       new fileSource.FileSource('/base/**').scan().toArray().subscribe((entries) => {
         expect(entries).to.containSubset([{
-          path: '/base/file2.yaml',
-          name: 'file2.yaml',
+          source: {
+            path: '/base/file2.yaml',
+            name: 'file2.yaml',
+          },
           content: {
             yaml: "value"
           }
@@ -85,10 +105,10 @@ describe('file-source',function(){
     })
 
     it('Should use extract function', function (done) {
-      new fileSource.FileSource('/base/**',(item)=>({
-        basename: item.basename,
-        dirname: item.dirname,
-        details: item.content
+      new fileSource.FileSource('/base/**', ({vfile,content}) => ({
+        basename: vfile.basename,
+        dirname: vfile.dirname,
+        details: content
       })).scan().toArray().subscribe((entries) => {
         expect(entries).to.containSubset([{
           basename: 'file2.yaml',
@@ -100,6 +120,6 @@ describe('file-source',function(){
         done()
       }, (error) => done(error))
     })
-    
+
   })
 })
