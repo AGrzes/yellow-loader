@@ -17,6 +17,7 @@ class FileSource {
       extract = ({content,vfile})=>({
         type: 'data',
         source:{
+          plugin: 'FileSource',
           path:this.base ? path.relative(this.base, vfile.path): vfile.path,
           name:vfile.basename
         },

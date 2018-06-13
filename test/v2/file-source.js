@@ -17,6 +17,7 @@ describe('file-source', function () {
         expect(entries).to.containSubset([{
           type:'data',
           source: {
+            plugin: 'FileSource',
             path: '/base/file1.json',
             name: 'file1.json'
           }
@@ -24,6 +25,7 @@ describe('file-source', function () {
         expect(entries).to.containSubset([{
           type:'data',
           source: {
+            plugin: 'FileSource',
             path: '/base/file2.yaml',
             name: 'file2.yaml'
           }
@@ -31,6 +33,7 @@ describe('file-source', function () {
         expect(entries).not.to.containSubset([{
           type:'data',
           source: {
+            plugin: 'FileSource',
             path: '/another',
             name: 'another'
           }
@@ -44,6 +47,7 @@ describe('file-source', function () {
         expect(entries).not.to.containSubset([{
           type:'data',
           source: {
+            plugin: 'FileSource',
             path: '/base',
             name: 'base'
           }
@@ -59,6 +63,7 @@ describe('file-source', function () {
         expect(entries).to.containSubset([{
           type:'data',
           source: {
+            plugin: 'FileSource',
             path: 'file1.json',
             name: 'file1.json'
           }
@@ -66,6 +71,7 @@ describe('file-source', function () {
         expect(entries).to.containSubset([{
           type:'data',
           source: {
+            plugin: 'FileSource',
             path: 'file2.yaml',
             name: 'file2.yaml'
           }
@@ -73,6 +79,7 @@ describe('file-source', function () {
         expect(entries).not.to.containSubset([{
           type:'data',
           source: {
+            plugin: 'FileSource',
             path: '/another',
             name: 'another'
           }
@@ -86,6 +93,7 @@ describe('file-source', function () {
         expect(entries).to.containSubset([{
           type:'data',
           source: {
+            plugin: 'FileSource',
             path: '/base/file1.json',
             name: 'file1.json',
           },
@@ -102,6 +110,7 @@ describe('file-source', function () {
         expect(entries).to.containSubset([{
           type:'data',
           source: {
+            plugin: 'FileSource',
             path: '/base/file2.yaml',
             name: 'file2.yaml',
           },
