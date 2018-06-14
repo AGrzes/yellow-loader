@@ -189,6 +189,35 @@ describe('file-source', function () {
         done()
       }, (error) => done(error))
     })
-
+    it('Should handle arrays from extract funtion', function (done) {
+      new fileSource.FileSource('/base/**', ({vfile,content}) => ([content,content]),{project:'project',rule:'rule'})
+      .scan().toArray().subscribe((entries) => {
+        expect(entries).to.containSubset([{
+          type:'data',
+          source: {
+            plugin: 'FileSource',
+            project: 'project',
+            rule:'rule',
+            location: '/base/file2.yaml#0'
+          },
+          data:{
+            yaml: "value"
+        }
+        }])
+        expect(entries).to.containSubset([{
+          type:'data',
+          source: {
+            plugin: 'FileSource',
+            project: 'project',
+            rule:'rule',
+            location: '/base/file2.yaml#1'
+          },
+          data:{
+            yaml: "value"
+        }
+        }])
+        done()
+      }, (error) => done(error))
+    })
   })
 })
