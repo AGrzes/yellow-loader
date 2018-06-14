@@ -32,7 +32,7 @@ class FileSource {
   }
   scan(){
     return streamToRx(vfs.src(this.globs,{cwd:this.base,nodir:true})).map((vfile)=>({
-      content:parsers[mime.getType(vfile.basename)]?parsers[mime.getType(vfile.basename)](vfile.contents):vfile.contents,
+      content:parsers[mime.getType(vfile.basename)]?parsers[mime.getType(vfile.basename)](vfile.contents):vfile.contents.toString('UTF-8'),
       vfile
     })).flatMap(({content,vfile})=>{
       const data = this.extract({content,vfile})

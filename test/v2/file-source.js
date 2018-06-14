@@ -9,6 +9,7 @@ describe('file-source', function () {
         '/base/file2.yaml': 'yaml: value',
         '/base/file3.json': '[{"json1":"value1"},{"json2":"value2"}]',
         '/base/file4.yaml': '---\nyaml1: value1\n---\nyaml2: value2',
+        '/base/file5.txt': 'text value',
         '/another': ''
       })
     })
@@ -130,6 +131,22 @@ describe('file-source', function () {
           data: {
             yaml: "value"
           }
+        }])
+        done()
+      }, (error) => done(error))
+    })
+
+    it('Should handle wiles without parser', function (done) {
+      new fileSource.FileSource('/base/**',{project:'project',rule:'rule'}).scan().toArray().subscribe((entries) => {
+        expect(entries).to.containSubset([{
+          type:'data',
+          source: {
+            plugin: 'FileSource',
+            project: 'project',
+            rule:'rule',
+            location: '/base/file5.txt'
+          },
+          data: "text value"
         }])
         done()
       }, (error) => done(error))
