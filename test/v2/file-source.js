@@ -107,7 +107,7 @@ describe('file-source', function () {
             rule:'rule',
             location: '/base/file1.json'
           },
-          content: {
+          data: {
             json: "value"
           }
         }])
@@ -125,7 +125,7 @@ describe('file-source', function () {
             rule:'rule',
             location: '/base/file2.yaml'
           },
-          content: {
+          data: {
             yaml: "value"
           }
         }])

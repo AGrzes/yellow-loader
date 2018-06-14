@@ -23,7 +23,7 @@ class FileSource {
           location:this.base ? path.relative(this.base, vfile.path): vfile.path,
           name:vfile.basename
         },
-        content
+        data: content
       })
     }
 
