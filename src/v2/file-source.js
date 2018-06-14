@@ -7,7 +7,13 @@ const YAML = require('js-yaml')
 const _ = require('lodash')
 const parsers = {
   'application/json': (text)=>JSON.parse(text),
-  'text/yaml': (text)=>YAML.load(text)
+  'text/yaml': (text)=>{
+    if (/(^|\n)---($|\n)/.test(text)){
+      return YAML.loadAll(text)
+    } else {
+      return YAML.load(text)
+    }
+  }
 }
 
 class FileSource {

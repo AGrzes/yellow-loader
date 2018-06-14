@@ -8,6 +8,7 @@ describe('file-source', function () {
         '/base/file1.json': '{"json":"value"}',
         '/base/file2.yaml': 'yaml: value',
         '/base/file3.json': '[{"json1":"value1"},{"json2":"value2"}]',
+        '/base/file4.yaml': '---\nyaml1: value1\n---\nyaml2: value2',
         '/another': ''
       })
     })
@@ -158,6 +159,36 @@ describe('file-source', function () {
           },
           data: {
             json2: "value2"
+          }
+        }])
+        done()
+      }, (error) => done(error))
+    })
+
+    it('Should handle multi0document yaml files', function (done) {
+      new fileSource.FileSource('/base/**',{project:'project',rule:'rule'}).scan().toArray().subscribe((entries) => {
+        expect(entries).to.containSubset([{
+          type:'data',
+          source: {
+            plugin: 'FileSource',
+            project: 'project',
+            rule:'rule',
+            location: '/base/file4.yaml#0'
+          },
+          data: {
+            yaml1: "value1"
+          }
+        }])
+        expect(entries).to.containSubset([{
+          type:'data',
+          source: {
+            plugin: 'FileSource',
+            project: 'project',
+            rule:'rule',
+            location: '/base/file4.yaml#1'
+          },
+          data: {
+            yaml2: "value2"
           }
         }])
         done()
