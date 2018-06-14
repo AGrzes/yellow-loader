@@ -1,5 +1,6 @@
 
 const _ = require('lodash')
+const rx = require('rxjs')
 class Loader {
   constructor(options){
     this.options = options
@@ -10,7 +11,7 @@ class Loader {
     this.rules.push(rule)
   }
   scan(){
-    _.forEach(this.rules,(rule)=>rule.scan())
+    return rx.Observable.merge(..._.map(this.rules,(rule)=>rule.scan()))
   }
 }
 module.exports.Loader = Loader
