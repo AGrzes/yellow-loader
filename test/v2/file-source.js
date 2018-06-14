@@ -7,6 +7,7 @@ describe('file-source', function () {
       mock({
         '/base/file1.json': '{"json":"value"}',
         '/base/file2.yaml': 'yaml: value',
+        '/base/file3.json': '[{"json1":"value1"},{"json2":"value2"}]',
         '/another': ''
       })
     })
@@ -127,6 +128,36 @@ describe('file-source', function () {
           },
           data: {
             yaml: "value"
+          }
+        }])
+        done()
+      }, (error) => done(error))
+    })
+
+    it('Should handle arrays', function (done) {
+      new fileSource.FileSource('/base/**',{project:'project',rule:'rule'}).scan().toArray().subscribe((entries) => {
+        expect(entries).to.containSubset([{
+          type:'data',
+          source: {
+            plugin: 'FileSource',
+            project: 'project',
+            rule:'rule',
+            location: '/base/file3.json#0'
+          },
+          data: {
+            json1: "value1"
+          }
+        }])
+        expect(entries).to.containSubset([{
+          type:'data',
+          source: {
+            plugin: 'FileSource',
+            project: 'project',
+            rule:'rule',
+            location: '/base/file3.json#1'
+          },
+          data: {
+            json2: "value2"
           }
         }])
         done()

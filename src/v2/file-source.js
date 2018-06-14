@@ -28,18 +28,33 @@ class FileSource {
     return streamToRx(vfs.src(this.globs,{cwd:this.base,nodir:true})).map((vfile)=>({
       content:parsers[mime.getType(vfile.basename)]?parsers[mime.getType(vfile.basename)](vfile.contents):vfile.contents,
       vfile
-    })).map(({content,vfile})=>{
+    })).flatMap(({content,vfile})=>{
       const data = this.extract({content,vfile})
-      return {
-        type: 'data',
-        source:{
-          plugin: 'FileSource',
-          project: this.project,
-          rule: this.rule,
-          location:this.base ? path.relative(this.base, vfile.path): vfile.path,
-          name:vfile.basename
-        },
-        data
+      const location = this.base ? path.relative(this.base, vfile.path): vfile.path
+      if (_.isArray(data)){
+        return rx.Observable.of(..._.map(data,(item,index)=>({
+          type: 'data',
+          source:{
+            plugin: 'FileSource',
+            project: this.project,
+            rule: this.rule,
+            location:`${location}#${index}`,
+            name:vfile.basename
+          },
+          data:item
+        })))
+      } else {
+        return rx.Observable.of({
+          type: 'data',
+          source:{
+            plugin: 'FileSource',
+            project: this.project,
+            rule: this.rule,
+            location:location,
+            name:vfile.basename
+          },
+          data
+        })
       }
     })
   }
