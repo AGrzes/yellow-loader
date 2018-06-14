@@ -138,13 +138,22 @@ describe('file-source', function () {
         basename: vfile.basename,
         dirname: vfile.dirname,
         details: content
-      })).scan().toArray().subscribe((entries) => {
+      }),{project:'project',rule:'rule'}).scan().toArray().subscribe((entries) => {
         expect(entries).to.containSubset([{
-          basename: 'file2.yaml',
-          dirname: '/base',
-          details: {
-            yaml: "value"
-          }
+          type:'data',
+          source: {
+            plugin: 'FileSource',
+            project: 'project',
+            rule:'rule',
+            location: '/base/file2.yaml'
+          },
+          data:{
+            basename: 'file2.yaml',
+            dirname: '/base',
+            details: {
+              yaml: "value"
+            }
+        }
         }])
         done()
       }, (error) => done(error))

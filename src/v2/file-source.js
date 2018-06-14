@@ -14,17 +14,7 @@ class FileSource {
   constructor(globs,extract = {},options = {}){
     if (!_.isFunction(extract)){
       options = extract
-      extract = ({content,vfile})=>({
-        type: 'data',
-        source:{
-          plugin: 'FileSource',
-          project: this.project,
-          rule: this.rule,
-          location:this.base ? path.relative(this.base, vfile.path): vfile.path,
-          name:vfile.basename
-        },
-        data: content
-      })
+      extract = ({content})=>content
     }
 
     const {base,project,rule}= options
@@ -38,7 +28,20 @@ class FileSource {
     return streamToRx(vfs.src(this.globs,{cwd:this.base,nodir:true})).map((vfile)=>({
       content:parsers[mime.getType(vfile.basename)]?parsers[mime.getType(vfile.basename)](vfile.contents):vfile.contents,
       vfile
-    })).map(this.extract)
+    })).map(({content,vfile})=>{
+      const data = this.extract({content,vfile})
+      return {
+        type: 'data',
+        source:{
+          plugin: 'FileSource',
+          project: this.project,
+          rule: this.rule,
+          location:this.base ? path.relative(this.base, vfile.path): vfile.path,
+          name:vfile.basename
+        },
+        data
+      }
+    })
   }
 }
 
