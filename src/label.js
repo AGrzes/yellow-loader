@@ -1,5 +1,6 @@
 
 const _  = require('lodash')
+const {map} = require('rxjs/operators')
 function labelFromKey(key){
   return _.startCase(key)
 }
@@ -20,10 +21,10 @@ function labelFromEntity(entity,keyFunction){
 }
 
 function set(source,keyFunction){
-  return source.map((entity)=>{
+  return source.pipe(map((entity)=>{
     entity.$label = labelFromEntity(entity,keyFunction)
     return entity
-  })
+  }))
 }
 
 module.exports.set = set
