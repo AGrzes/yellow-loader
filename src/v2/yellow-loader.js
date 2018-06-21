@@ -11,7 +11,7 @@ class Loader {
     this.rules.push(rule)
   }
   scan(){
-    return rx.Observable.merge(..._.map(this.rules,(rule)=>rule.scan()))
+    return rx.merge(..._.map(this.rules,(rule)=>rule.scan()))
   }
 }
 module.exports.Loader = Loader
