@@ -2,6 +2,7 @@ const expect = require('chai').use(require('chai-subset')).expect
 const mock = require('mock-fs')
 const json = require('../src/json')
 const rxjs = require('rxjs')
+const {toArray} = require('rxjs/operators')
 describe('json', () => {
   before(() => {
     mock({
@@ -12,10 +13,10 @@ describe('json', () => {
   after(() => mock.restore())
 
   it('Should load json', function (done) {
-    json.load(rxjs.Observable.of({
+    json.load(rxjs.of({
       path: '/file1.json',
       fileName: 'file1.json'
-    })).toArray().subscribe((entries) => {
+    })).pipe(toArray()).subscribe((entries) => {
       expect(entries).to.have.property('length', 1)
       expect(entries).to.containSubset([{
         $metadata: {
@@ -29,10 +30,10 @@ describe('json', () => {
   })
 
   it('Should load multiple documents', function (done) {
-    json.load(rxjs.Observable.of({
+    json.load(rxjs.of({
       path: '/file2.json',
       fileName: 'file2.json'
-    })).toArray().subscribe((entries) => {
+    })).pipe(toArray()).subscribe((entries) => {
       expect(entries).to.have.property('length', 2)
       expect(entries).to.containSubset([{
         $metadata: {
@@ -53,17 +54,17 @@ describe('json', () => {
   })
 
   it('Should skip files that are not json', function (done) {
-    json.load(rxjs.Observable.of({
+    json.load(rxjs.of({
       path: '/file1.not-json',
       fileName: 'file1.not-json'
-    })).toArray().subscribe((entries) => {
+    })).pipe(toArray()).subscribe((entries) => {
       expect(entries).to.have.property('length', 0)
       done()
     }, (error) => done(error))
   })
 
   it('Should serialize', function (done) {
-    json.serialize(rxjs.Observable.of({
+    json.serialize(rxjs.of({
       key: "value"
     })).subscribe((content) => {
       expect(JSON.parse(content)).to.be.deep.equals({
