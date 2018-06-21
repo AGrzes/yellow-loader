@@ -1,5 +1,6 @@
 const _  = require('lodash')
 const rx = require('rxjs')
+const {mergeMap} = require('rxjs/operators')
 function isRelation(attribute){
   return _.startsWith(attribute,'@')
 }
@@ -46,9 +47,9 @@ function splitEntity(entity,keyFunction){
 }
 
 function split(source,keyFunction){
-  return source.mergeMap((entity)=>{
-    return rx.Observable.of(...splitEntity(entity,keyFunction))
-  })
+  return source.pipe(mergeMap((entity)=>{
+    return rx.of(...splitEntity(entity,keyFunction))
+  }))
 }
 
 module.exports = split

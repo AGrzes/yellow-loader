@@ -2,7 +2,8 @@ const expect = require('chai').use(require('chai-subset')).expect
 const mock = require('mock-fs')
 const yaml = require('../src/yaml')
 const rxjs = require('rxjs')
-describe('json', () => {
+const {toArray} = require('rxjs/operators')
+describe('yaml', () => {
   before(() => {
     mock({
       '/file1.yaml': `key: value
@@ -17,10 +18,10 @@ key2: value2
   after(() => mock.restore())
 
   it('Should load yaml', function (done) {
-    yaml.load(rxjs.Observable.of({
+    yaml.load(rxjs.of({
       path: '/file1.yaml',
       fileName: 'file1.yaml'
-    })).toArray().subscribe((entries) => {
+    })).pipe(toArray()).subscribe((entries) => {
       expect(entries).to.have.property('length', 1)
       expect(entries).to.containSubset([{
         $metadata: {
@@ -34,10 +35,10 @@ key2: value2
   })
 
   it('Should load multiple documents', function (done) {
-    yaml.load(rxjs.Observable.of({
+    yaml.load(rxjs.of({
       path: '/file2.yaml',
       fileName: 'file2.yaml'
-    })).toArray().subscribe((entries) => {
+    })).pipe(toArray()).subscribe((entries) => {
       expect(entries).to.have.property('length', 2)
       expect(entries).to.containSubset([{
         $metadata: {
@@ -58,10 +59,10 @@ key2: value2
   })
 
   it('Should skip files that are not yaml', function (done) {
-    yaml.load(rxjs.Observable.of({
+    yaml.load(rxjs.of({
       path: '/file1.not-yaml',
       fileName: 'file1.not-yaml'
-    })).toArray().subscribe((entries) => {
+    })).pipe(toArray()).subscribe((entries) => {
       expect(entries).to.have.property('length', 0)
       done()
     }, (error) => done(error))

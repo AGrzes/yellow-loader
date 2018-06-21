@@ -1,5 +1,5 @@
 const _  = require('lodash')
-
+const {map} = require('rxjs/operators')
 function mergeValues(targetValue,sourceValue){
   if (targetValue && sourceValue){
     if (_.isArray(targetValue)){
@@ -23,7 +23,7 @@ function isGenerated(entry){
 
 function merge(source){
   const model = {}
-  return source.map((entry)=>{
+  return source.pipe(map((entry)=>{
     const existing = model[entry.$key]
     if (existing){
       if (isGenerated(existing) == isGenerated(entry)) {
@@ -41,7 +41,7 @@ function merge(source){
       model[entry.$key] = entry
     }
     return _.values(model)
-  })
+  }))
 }
 
 module.exports = merge

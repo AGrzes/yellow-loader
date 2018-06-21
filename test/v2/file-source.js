@@ -1,6 +1,7 @@
 const fileSource = require('../../src/v2/file-source')
 const expect = require('chai').expect
 const mock = require('mock-fs')
+const {toArray} = require('rxjs/operators')
 describe('file-source', function () {
   describe('FileSource', function () {
     before(() => {
@@ -16,7 +17,7 @@ describe('file-source', function () {
     after(() => mock.restore())
 
     it('Should scan selected directory', function (done) {
-      new fileSource.FileSource('/base/**',{project:'project',rule:'rule'}).scan().toArray().subscribe((entries) => {
+      new fileSource.FileSource('/base/**',{project:'project',rule:'rule'}).scan().pipe(toArray()).subscribe((entries) => {
         expect(entries).to.containSubset([{
           type:'data',
           source: {
@@ -49,7 +50,7 @@ describe('file-source', function () {
     })
 
     it('Should list only files', function (done) {
-      new fileSource.FileSource('/base/**',{project:'project',rule:'rule'}).scan().toArray().subscribe((entries) => {
+      new fileSource.FileSource('/base/**',{project:'project',rule:'rule'}).scan().pipe(toArray()).subscribe((entries) => {
         expect(entries).not.to.containSubset([{
           type:'data',
           source: {
@@ -68,7 +69,7 @@ describe('file-source', function () {
         base: '/base',
         project: 'project',
         rule:'rule'
-      }).scan().toArray().subscribe((entries) => {
+      }).scan().pipe(toArray()).subscribe((entries) => {
         expect(entries).to.containSubset([{
           type:'data',
           source: {
@@ -101,7 +102,7 @@ describe('file-source', function () {
     })
 
     it('Should parse json file', function (done) {
-      new fileSource.FileSource('/base/**',{project:'project',rule:'rule'}).scan().toArray().subscribe((entries) => {
+      new fileSource.FileSource('/base/**',{project:'project',rule:'rule'}).scan().pipe(toArray()).subscribe((entries) => {
         expect(entries).to.containSubset([{
           type:'data',
           source: {
@@ -119,7 +120,7 @@ describe('file-source', function () {
     })
 
     it('Should parse yaml file', function (done) {
-      new fileSource.FileSource('/base/**',{project:'project',rule:'rule'}).scan().toArray().subscribe((entries) => {
+      new fileSource.FileSource('/base/**',{project:'project',rule:'rule'}).scan().pipe(toArray()).subscribe((entries) => {
         expect(entries).to.containSubset([{
           type:'data',
           source: {
@@ -137,7 +138,7 @@ describe('file-source', function () {
     })
 
     it('Should handle wiles without parser', function (done) {
-      new fileSource.FileSource('/base/**',{project:'project',rule:'rule'}).scan().toArray().subscribe((entries) => {
+      new fileSource.FileSource('/base/**',{project:'project',rule:'rule'}).scan().pipe(toArray()).subscribe((entries) => {
         expect(entries).to.containSubset([{
           type:'data',
           source: {
@@ -153,7 +154,7 @@ describe('file-source', function () {
     })
 
     it('Should handle arrays', function (done) {
-      new fileSource.FileSource('/base/**',{project:'project',rule:'rule'}).scan().toArray().subscribe((entries) => {
+      new fileSource.FileSource('/base/**',{project:'project',rule:'rule'}).scan().pipe(toArray()).subscribe((entries) => {
         expect(entries).to.containSubset([{
           type:'data',
           source: {
@@ -183,7 +184,7 @@ describe('file-source', function () {
     })
 
     it('Should handle multi0document yaml files', function (done) {
-      new fileSource.FileSource('/base/**',{project:'project',rule:'rule'}).scan().toArray().subscribe((entries) => {
+      new fileSource.FileSource('/base/**',{project:'project',rule:'rule'}).scan().pipe(toArray()).subscribe((entries) => {
         expect(entries).to.containSubset([{
           type:'data',
           source: {
@@ -217,7 +218,7 @@ describe('file-source', function () {
         basename: vfile.basename,
         dirname: vfile.dirname,
         details: content
-      }),{project:'project',rule:'rule'}).scan().toArray().subscribe((entries) => {
+      }),{project:'project',rule:'rule'}).scan().pipe(toArray()).subscribe((entries) => {
         expect(entries).to.containSubset([{
           type:'data',
           source: {
@@ -239,7 +240,7 @@ describe('file-source', function () {
     })
     it('Should handle arrays from extract funtion', function (done) {
       new fileSource.FileSource('/base/**', ({vfile,content}) => ([content,content]),{project:'project',rule:'rule'})
-      .scan().toArray().subscribe((entries) => {
+      .scan().pipe(toArray()).subscribe((entries) => {
         expect(entries).to.containSubset([{
           type:'data',
           source: {

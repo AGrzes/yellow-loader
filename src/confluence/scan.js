@@ -1,10 +1,11 @@
 const client = require('confluence-client')
 const rx = require('rxjs')
+const {flatMap} = require('rxjs/operators')
 module.exports = (endpoint) => {
-  return rx.Observable.fromPromise(client({
+  return rx.from(client({
     endpoint
-  }).search("type = 'page'", "body.export_view,metadata.labels")).flatMap((result)=>{
-    return rx.Observable.of(...result.results.map((item)=>({
+  }).search("type = 'page'", "body.export_view,metadata.labels")).pipe(flatMap((result)=>{
+    return rx.of(...result.results.map((item)=>({
       "id": item.id,
       "type": item.type,
       "status": item.status,
@@ -17,5 +18,5 @@ module.exports = (endpoint) => {
         "name": item.container.name
       }
     })))
-  })
+  }))
 }

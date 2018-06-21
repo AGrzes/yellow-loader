@@ -1,6 +1,7 @@
 const expect = require('chai').use(require('chai-subset')).expect
 const nock = require('nock')
 const scan = require('../../src/confluence/scan')
+const {toArray} = require('rxjs/operators')
 describe('scan', () => {
   before(() => {
   nock('http://example.org').get(/\/rest\/api\/content\/search\?.*/).reply(200,{
@@ -41,7 +42,7 @@ describe('scan', () => {
   })
 
   it('Should extract entities', function (done) {
-    scan('http://example.org').toArray().subscribe((entries) => {
+    scan('http://example.org').pipe(toArray()).subscribe((entries) => {
       expect(entries).to.containSubset([{
         "id": "!!id!!",
         "type": "page",
