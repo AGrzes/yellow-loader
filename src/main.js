@@ -8,16 +8,17 @@ const merge = require('./merge')
 const rx = require('rxjs')
 const fs = require('fs')
 const _ = require('lodash')
-const writeFile = rx.Observable.bindNodeCallback(fs.writeFile)
+const {last,map,mergeMap} = require('rxjs/operators')
+const writeFile = rx.bindNodeCallback(fs.writeFile)
 function load(basePath,target){
   const files = scan(basePath)
-  const loaded = rx.Observable.merge(json.load(files),yaml.load(files))
+  const loaded = rx.merge(json.load(files),yaml.load(files))
   const relationsSplit = split(loaded,_.partial(key.keyFromEntity,_,label.labelFromEntity)) 
   const withKey = key.set(relationsSplit,label.labelFromEntity)
   const withLabel = label.set(withKey,key.keyFromEntity)
   const merged = merge(withLabel)
-  const serialized = json.serialize(merged.last().map((model)=>({items:model})))
+  const serialized = json.serialize(merged.pipe(last(),map((model)=>({items:model}))))
 
-  return serialized.mergeMap((content)=>writeFile(target,content,'UTF-8'))
+  return serialized.pipe(mergeMap((content)=>writeFile(target,content,'UTF-8')))
 }
 module.exports = load
