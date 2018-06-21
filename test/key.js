@@ -1,11 +1,12 @@
 const expect = require('chai').use(require('chai-subset')).expect
 const key = require('../src/key')
 const rxjs = require('rxjs')
+const {toArray} = require('rxjs/operators')
 describe('key', () => {
   it('Should keep $key', function (done) {
-    key.set(rxjs.Observable.of({
+    key.set(rxjs.of({
       $key: "key"
-    })).toArray().subscribe((entries) => {
+    })).pipe(toArray()).subscribe((entries) => {
       expect(entries).to.have.property('length', 1)
       expect(entries).to.containSubset([{
         $key: "key"
@@ -14,9 +15,9 @@ describe('key', () => {
     }, (error) => done(error))
   })
   it('Should use key', function (done) {
-    key.set(rxjs.Observable.of({
+    key.set(rxjs.of({
       key: "key"
-    })).toArray().subscribe((entries) => {
+    })).pipe(toArray()).subscribe((entries) => {
       expect(entries).to.have.property('length', 1)
       expect(entries).to.containSubset([{
         $key: "key"
@@ -25,9 +26,9 @@ describe('key', () => {
     }, (error) => done(error))
   })
   it('Should use id', function (done) {
-    key.set(rxjs.Observable.of({
+    key.set(rxjs.of({
       id: "key"
-    })).toArray().subscribe((entries) => {
+    })).pipe(toArray()).subscribe((entries) => {
       expect(entries).to.have.property('length', 1)
       expect(entries).to.containSubset([{
         $key: "key"
@@ -36,9 +37,9 @@ describe('key', () => {
     }, (error) => done(error))
   })
   it('Should use label', function (done) {
-    key.set(rxjs.Observable.of({
+    key.set(rxjs.of({
       label: "key"
-    }),(entry)=>entry.label).toArray().subscribe((entries) => {
+    }),(entry)=>entry.label).pipe(toArray()).subscribe((entries) => {
       expect(entries).to.have.property('length', 1)
       expect(entries).to.containSubset([{
         $key: "key"
@@ -48,9 +49,9 @@ describe('key', () => {
   })
 
   it('Should transform label', function (done) {
-    key.set(rxjs.Observable.of({
+    key.set(rxjs.of({
       label: "Key Key"
-    }),(entry)=>entry.label).toArray().subscribe((entries) => {
+    }),(entry)=>entry.label).pipe(toArray()).subscribe((entries) => {
       expect(entries).to.have.property('length', 1)
       expect(entries).to.containSubset([{
         $key: "key-key"
