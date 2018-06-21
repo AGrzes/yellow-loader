@@ -5,6 +5,7 @@ const path = require('path')
 const mime = require('mime')
 const YAML = require('js-yaml')
 const _ = require('lodash')
+const {map,flatMap} = require('rxjs/operators')
 const parsers = {
   'application/json': (text)=>JSON.parse(text),
   'text/yaml': (text)=>{
@@ -31,14 +32,14 @@ class FileSource {
     this.rule = rule
   }
   scan(){
-    return streamToRx(vfs.src(this.globs,{cwd:this.base,nodir:true})).map((vfile)=>({
+    return streamToRx(vfs.src(this.globs,{cwd:this.base,nodir:true})).pipe(map((vfile)=>({
       content:parsers[mime.getType(vfile.basename)]?parsers[mime.getType(vfile.basename)](vfile.contents):vfile.contents.toString('UTF-8'),
       vfile
-    })).flatMap(({content,vfile})=>{
+    })),flatMap(({content,vfile})=>{
       const data = this.extract({content,vfile})
       const location = this.base ? path.relative(this.base, vfile.path): vfile.path
       if (_.isArray(data)){
-        return rx.Observable.of(..._.map(data,(item,index)=>({
+        return rx.of(..._.map(data,(item,index)=>({
           type: 'data',
           source:{
             plugin: 'FileSource',
@@ -50,7 +51,7 @@ class FileSource {
           data:item
         })))
       } else {
-        return rx.Observable.of({
+        return rx.of({
           type: 'data',
           source:{
             plugin: 'FileSource',
@@ -62,7 +63,7 @@ class FileSource {
           data
         })
       }
-    })
+    }))
   }
 }
 
